@@ -1,10 +1,11 @@
-from modules.data_manager import DataManager
-from modules.flight_search import FlightSearch
+from modules import DataManager, FlightSearch, EmailManager
 from datetime import datetime, timedelta
 
 data_manager = DataManager()
-sheet_data = data_manager.get_destination_data()
 flight_search = FlightSearch()
+email_manager = EmailManager()
+
+sheet_data = data_manager.get_destination_data()
 print(sheet_data)
 
 ORIGIN_CITY_IATA = "TPE"
@@ -28,3 +29,26 @@ for row in sheet_data:
         to_time=six_month_from_today
     )
 
+    try:
+        if flight.price < row["lowestPrice"]:
+            email_manager.send_email(
+                receiver_email="roy32011@gmail.com",
+                subject=f"Lowest Price of {flight.origin_city} to {flight.destination_city}",
+                message=f"""
+                <html>
+                    <body>
+                    <h1>Low Price Alert!</h1>
+                        <p>
+                            Only NT${flight.price} to fly from 
+                            {flight.origin_city}-{flight.origin_airport} to 
+                            {flight.destination_city}-{flight.destination_airport}, 
+                            from {flight.out_date} to {flight.return_date}.
+                        </p>
+                        <br>
+                        <a href="{flight.link}">Booking Link</a>
+                    </body>
+                </html>
+                """
+            )
+    except AttributeError:
+        print("No Email Send!")
