@@ -32,7 +32,7 @@ for row in sheet_data:
     try:
         if flight.price < row["lowestPrice"]:
             email_manager.send_email(
-                receiver_email="roy32011@gmail.com",
+                receiver_email="roy32011@gmail.com", # hsuanjung.wu@gmail.com
                 subject=f"Lowest Price of {flight.origin_city} to {flight.destination_city}",
                 message=f"""
                 <html>
@@ -40,9 +40,9 @@ for row in sheet_data:
                     <h1>Low Price Alert!</h1>
                         <p>
                             Only NT${flight.price} to fly from 
-                            {flight.origin_city}-{flight.origin_airport} to 
-                            {flight.destination_city}-{flight.destination_airport}, 
-                            from {flight.out_date} to {flight.return_date}.
+                            <b>{flight.origin_city}-{flight.origin_airport}</b> to 
+                            <b>{flight.destination_city}-{flight.destination_airport}</b>,
+                            from <em>{flight.out_date} to {flight.return_date}</em>.
                         </p>
                         <br>
                         <a href="{flight.link}">Booking Link</a>
