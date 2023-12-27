@@ -24,3 +24,9 @@ class DataManager:
             response = requests.put(url=f"{SHEETY_ENDPOINT}/{city['id']}",
                                     json=new_data)
             print(response.text)
+
+
+if __name__ == "__main__":
+    data_manager = DataManager()
+    result = data_manager.get_destination_data()
+    print(result)
